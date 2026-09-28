@@ -31,6 +31,14 @@ The project deliberately separates **language understanding** from **game author
 - Libram provides higher-level KoL automation helpers.
 - KoLmafia remains authoritative for real game state and real mutations.
 
+## Kolmaf-AI integration
+
+Kingdomsitter is a companion language/tooling project for [Kolmaf-AI Desktop](https://github.com/donCannoli-burns/kolmaf-ai-desktop).
+
+Within that ecosystem, Kingdomsitter provides the ASH parsing, typed-IR, analysis, and ASH → TypeScript/Libram bridge. Kolmaf-AI Desktop remains the workspace/proposal/policy layer, while KoLmafia remains authoritative for live game state and mutations.
+
+Project page: https://doncannoli-burns.github.io/kolmaf-ai-desktop/
+
 ## Status
 
 This is a runnable bootstrap, not a claim of complete ASH compatibility.
