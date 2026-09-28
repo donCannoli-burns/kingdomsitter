@@ -1,0 +1,25 @@
+{
+  "grammars": [
+    {
+      "name": "ash",
+      "camelcase": "Ash",
+      "scope": "source.ash",
+      "path": ".",
+      "file-types": [
+        "ash"
+      ],
+      "highlights": "queries/highlights.scm",
+      "title": "KoLmafia ASH",
+      "injection-regex": "^ash$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "KoLmafia ASH grammar for kingdomsitter"
+  },
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "bindings": {
+    "go": true
+  }
+}

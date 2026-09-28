@@ -1,0 +1,26 @@
+==================
+Variables and calls
+==================
+
+int hp = my_hp();
+int teeth = item_amount($item[seal tooth]);
+print("hello");
+
+---
+
+(source_file
+  (variable_declaration
+    type: (primitive_type)
+    name: (identifier)
+    value: (call_expression
+      function: (identifier)))
+  (variable_declaration
+    type: (primitive_type)
+    name: (identifier)
+    value: (call_expression
+      function: (identifier)
+      (typed_constant)))
+  (expression_statement
+    (call_expression
+      function: (identifier)
+      (string))))

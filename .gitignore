@@ -1,0 +1,9 @@
+/bin/
+/dist/
+/node_modules/
+/ts-runtime/node_modules/
+/tree-sitter-ash/node_modules/
+/tree-sitter-ash/src/
+/tree-sitter-ash/*.wasm
+*.log
+.DS_Store

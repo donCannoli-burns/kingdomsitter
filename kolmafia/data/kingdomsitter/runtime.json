@@ -1,0 +1,6 @@
+{
+  "schema": "kingdomsitter.kolmafia/v0",
+  "sidecar_url": "http://127.0.0.1:10423",
+  "execution_authority": false,
+  "note": "KoLmafia remains the game-state authority. The Kingdomsitter sidecar is analysis/transpilation-only in v0.1.0."
+}

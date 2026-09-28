@@ -1,0 +1,25 @@
+{
+  "name": "kingdomsitter",
+  "schema": "kingdomsitter.runtime/v0",
+  "sidecar": {
+    "language": "go",
+    "default_listen": "127.0.0.1:10423",
+    "execution_authority": false
+  },
+  "pipeline": [
+    "go-module",
+    "sidecar",
+    "tree-sitter-ash",
+    "typed-ash-ir",
+    "typescript-emitter",
+    "agent-envelope",
+    "libram",
+    "kolmafia",
+    "host-adapter",
+    "sidecar"
+  ],
+  "live_host": {
+    "status": "adapter-required",
+    "note": "No stock KoLmafia TCP CLI port is assumed."
+  }
+}

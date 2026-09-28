@@ -1,0 +1,16 @@
+{
+  "name": "tree-sitter-ash",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tree-sitter grammar for KoLmafia ASH, used by kingdomsitter",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse:example": "tree-sitter parse ../examples/hello.ash"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "0.25.10"
+  }
+}
