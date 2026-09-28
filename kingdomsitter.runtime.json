@@ -4,18 +4,24 @@
   "sidecar": {
     "language": "go",
     "default_listen": "127.0.0.1:10423",
-    "execution_authority": false
+    "execution_authority": false,
+    "detached_command": "kingdomsitter start",
+    "foreground_command": "kingdomsitter serve"
+  },
+  "kolmafia_preferences": {
+    "_sidecar": "daily mode",
+    "sidecar": "persistent 24/7 override"
   },
   "pipeline": [
     "go-module",
-    "sidecar",
+    "detached-sidecar",
     "tree-sitter-ash",
     "typed-ash-ir",
     "typescript-emitter",
     "agent-envelope",
     "libram",
     "kolmafia",
-    "host-adapter",
+    "after-adventure-state-sync",
     "sidecar"
   ],
   "live_host": {

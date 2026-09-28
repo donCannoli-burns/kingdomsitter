@@ -2,5 +2,14 @@
   "schema": "kingdomsitter.kolmafia/v0",
   "sidecar_url": "http://127.0.0.1:10423",
   "execution_authority": false,
-  "note": "KoLmafia remains the game-state authority. The Kingdomsitter sidecar is analysis/transpilation-only in v0.1.0."
+  "preferences": {
+    "_sidecar": "daily mode; custom underscore preference clears at rollover/new ascension",
+    "sidecar": "persistent 24/7 override"
+  },
+  "state_sync": {
+    "login_command": "kingdomsitter login",
+    "after_adventure_command": "kingdomsitter turn",
+    "endpoint": "GET /v0/update"
+  },
+  "note": "KoLmafia remains the game-state authority. The sidecar accepts read-only state snapshots and exposes no game-execution endpoint."
 }

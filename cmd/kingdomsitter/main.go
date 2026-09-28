@@ -8,6 +8,7 @@ import (
 
 	"github.com/donCannoli-burns/kingdomsitter/internal/agent"
 	"github.com/donCannoli-burns/kingdomsitter/internal/analyze"
+	"github.com/donCannoli-burns/kingdomsitter/internal/daemon"
 	"github.com/donCannoli-burns/kingdomsitter/internal/parser"
 	"github.com/donCannoli-burns/kingdomsitter/internal/server"
 	"github.com/donCannoli-burns/kingdomsitter/internal/tsgen"
@@ -21,14 +22,40 @@ func main() {
 	case "chain":
 		fmt.Printf("go.mod -> Go sidecar -> %s -> ASH IR -> TypeScript/agent -> Libram -> KoLmafia -> host adapter -> Go sidecar\n", parser.Backend())
 	case "serve":
-		addr := "127.0.0.1:10423"
-		if len(os.Args) == 3 {
-			addr = os.Args[2]
-		} else if len(os.Args) > 3 {
-			usage(2)
-		}
+		addr := optionalAddr()
 		fmt.Fprintf(os.Stderr, "kingdomsitter sidecar listening on http://%s (analysis/transpile only)\n", addr)
 		must(http.ListenAndServe(addr, server.Handler()))
+	case "start":
+		addr := optionalAddr()
+		message, err := daemon.Start(addr)
+		must(err)
+		fmt.Println(message)
+	case "stop":
+		if len(os.Args) != 2 {
+			usage(2)
+		}
+		message, err := daemon.Stop()
+		must(err)
+		fmt.Println(message)
+	case "status":
+		addr := optionalAddr()
+		message, err := daemon.Status(addr)
+		must(err)
+		fmt.Println(message)
+	case "conda-install":
+		if len(os.Args) != 2 {
+			usage(2)
+		}
+		path, err := daemon.InstallCondaHook()
+		must(err)
+		fmt.Printf("installed Conda activation hook: %s\n", path)
+	case "conda-remove":
+		if len(os.Args) != 2 {
+			usage(2)
+		}
+		path, err := daemon.RemoveCondaHook()
+		must(err)
+		fmt.Printf("removed Conda activation hook: %s\n", path)
 	case "parse", "analyze", "agent", "emit-ts":
 		if len(os.Args) != 3 {
 			usage(2)
@@ -52,6 +79,17 @@ func main() {
 	}
 }
 
+func optionalAddr() string {
+	if len(os.Args) == 2 {
+		return daemon.DefaultAddr
+	}
+	if len(os.Args) == 3 {
+		return os.Args[2]
+	}
+	usage(2)
+	return ""
+}
+
 func writeJSON(v any) {
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
@@ -70,7 +108,12 @@ func usage(code int) {
 
 usage:
   kingdomsitter chain
-  kingdomsitter serve [127.0.0.1:10423]
+  kingdomsitter start [127.0.0.1:10423]      # detached; terminal returns
+  kingdomsitter stop
+  kingdomsitter status [127.0.0.1:10423]
+  kingdomsitter serve [127.0.0.1:10423]      # foreground/debug
+  kingdomsitter conda-install
+  kingdomsitter conda-remove
   kingdomsitter parse <file.ash>
   kingdomsitter analyze <file.ash>
   kingdomsitter agent <file.ash>

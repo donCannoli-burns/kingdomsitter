@@ -75,14 +75,27 @@ kingdomsitter chain
 kingdomsitter status
 ```
 
-The checkout does **not** turn the Go program into an in-process KoLmafia component. Install/start the sidecar separately:
+The checkout does **not** turn the Go program into an in-process KoLmafia component. Install the sidecar separately, then start it in detached mode:
 
 ```bash
 go install github.com/donCannoli-burns/kingdomsitter/cmd/kingdomsitter@latest
-kingdomsitter serve
+kingdomsitter start
 ```
 
-See [`docs/KOLMAFIA-CHECKOUT.md`](docs/KOLMAFIA-CHECKOUT.md) for the exact install/update boundary.
+`start` returns the terminal immediately. `serve` remains available as the foreground/debug command.
+
+If you use Conda, `kingdomsitter conda-install` installs an activation hook that idempotently starts the detached daemon whenever that environment is activated.
+
+The KoLmafia controller uses two custom prefs:
+
+```text
+_sidecar=true   # daily mode; clears at rollover/new ascension
+sidecar=false   # persistent 24/7 override is off
+```
+
+Run `kingdomsitter reset` in the gCLI to restore exactly those defaults. `kingdomsitter hooks-install` safely installs login and after-adventure state-sync hooks without overwriting an existing different hook.
+
+See [`docs/KOLMAFIA-CHECKOUT.md`](docs/KOLMAFIA-CHECKOUT.md) for the exact lifecycle, Conda, preference, and update behavior.
 
 ## Quick start
 
@@ -91,7 +104,8 @@ go test ./...
 go build -o kingdomsitter ./cmd/kingdomsitter
 
 ./kingdomsitter chain
-./kingdomsitter serve
+./kingdomsitter start
+./kingdomsitter status
 ./kingdomsitter parse examples/hello.ash
 ./kingdomsitter analyze examples/hello.ash
 ./kingdomsitter emit-ts examples/hello.ash
@@ -122,17 +136,25 @@ export function main(): void {
 
 ```text
 kingdomsitter chain
+kingdomsitter start [127.0.0.1:10423]
+kingdomsitter stop
+kingdomsitter status
+kingdomsitter serve [127.0.0.1:10423]
+kingdomsitter conda-install
+kingdomsitter conda-remove
 kingdomsitter parse <file.ash>
 kingdomsitter analyze <file.ash>
 kingdomsitter emit-ts <file.ash>
 ```
 
-`serve` starts the analysis/transpilation sidecar on `127.0.0.1:10423` by default. That port belongs to **kingdomsitter**, not to stock KoLmafia. The v0 server intentionally exposes no execution endpoint.
+`start` launches the sidecar detached and returns the terminal. `serve` is the foreground/debug form. The default `127.0.0.1:10423` listener belongs to **kingdomsitter**, not stock KoLmafia. The v0 server intentionally exposes no execution endpoint.
 
 HTTP surface:
 
 ```text
 GET  /health
+GET  /v0/state
+GET  /v0/update
 POST /v0/parse
 POST /v0/analyze
 POST /v0/agent

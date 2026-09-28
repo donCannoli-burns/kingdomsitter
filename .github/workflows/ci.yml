@@ -24,9 +24,16 @@ jobs:
         run: go test ./...
       - name: Build
         run: go build -o /tmp/kingdomsitter ./cmd/kingdomsitter
+      - name: Detached daemon smoke
+        run: |
+          /tmp/kingdomsitter start
+          /tmp/kingdomsitter status
+          curl --fail --silent http://127.0.0.1:10423/health >/dev/null
+          /tmp/kingdomsitter stop
       - name: Manifest check
         run: python3 -m json.tool manifest.json >/dev/null
       - name: KoLmafia install tree check
         run: |
           test -f kolmafia/scripts/kingdomsitter.ash
+          test -f kolmafia/scripts/kingdomsitter_reset.ash
           test -f kolmafia/data/kingdomsitter/runtime.json
